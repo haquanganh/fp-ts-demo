@@ -1,1 +1,1 @@
-# Couuple of demo for FP-TS
+# Couple of demo for FP-TS
