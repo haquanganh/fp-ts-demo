@@ -26,15 +26,13 @@ const getMovieHighlight = (movie: Movie) =>
   pipe(
     movie,
     getMovieAwardHighlight,
-    O.alt(() => getMovieTop10Highlight(movie)),
+    O.orElse(() => getMovieTop10Highlight(movie)),
     O.getOrElse(() => `Released in ${movie.releaseYear}`)
   );
 
-console.log(
-  'getMovieHighlight: ',
-  getMovieHighlight({
-    ratingPosition: 12,
-    releaseYear: 2023,
-    title: 'Marvel',
-  })
-);
+const result = getMovieHighlight({
+  ratingPosition: 1,
+  releaseYear: 2024,
+  title: '123',
+});
+console.log('result: ', result);
