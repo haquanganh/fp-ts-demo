@@ -4,9 +4,10 @@ const trim = (s: string) => s.trim();
 const size = (s: string) => s.length;
 const isAtLeast3 = (n: number) => n >= 3;
 
-const pineResult = pipe('astro', trim, size, isAtLeast3);
+// imperative
+const dataI = isAtLeast3(size(trim('astro')));
+console.log('dataI: ', dataI);
 
-/* #region  */
-// return isAtLeast3(size(trim('he')));
-
-/* #endregion */
+// functional
+const data = pipe('astro', trim, size, isAtLeast3);
+console.log('data: ', data);

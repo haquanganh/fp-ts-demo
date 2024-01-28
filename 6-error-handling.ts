@@ -1,38 +1,23 @@
 import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 
-type Movie = {
-  title: string;
-  releaseYear: number;
-  ratingPosition: number;
-  award?: string;
+type Car = {
+  model: string;
+  year: number;
+  top: number;
 };
 
-const getMovieAwardHighlight = (movie: Movie): O.Option<string> =>
-  pipe(
-    movie.award,
-    O.fromNullable,
-    O.map((award) => `Awarded with: ${award}`)
-  );
+const isCarTop10 = (car: Car) =>
+  car.top <= 10 ? O.some(`${car.model} is top 10`) : O.none;
 
-const getMovieTop10Highlight = (movie: Movie): O.Option<string> =>
-  pipe(
-    movie,
-    O.fromPredicate(({ ratingPosition }) => ratingPosition <= 10),
-    O.map(({ ratingPosition }) => `In TOP 10 at position: ${ratingPosition}`)
-  );
+const isRecentModel = (car: Car) =>
+  car.year >= 2010 ? O.some(`${car.model} is recent model`) : O.none;
 
-const getMovieHighlight = (movie: Movie) =>
+const getTopCar = (movie: Car) =>
   pipe(
     movie,
-    getMovieAwardHighlight,
-    O.orElse(() => getMovieTop10Highlight(movie)),
-    O.getOrElse(() => `Released in ${movie.releaseYear}`)
+    isCarTop10,
+    O.orElse(() => isRecentModel(movie)),
+    O.getOrElse(() => `${movie.model} is not in top 10`)
   );
-
-const result = getMovieHighlight({
-  ratingPosition: 1,
-  releaseYear: 2024,
-  title: '123',
-});
-console.log('result: ', result);
+console.log('getTopCar: ', getTopCar({ model: 'Toyota', top: 11, year: 2024 }));
